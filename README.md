@@ -5,4 +5,4 @@ Its about my hometasks
 
 --------------------------------------------------------------------------
 
-More information --> `Odoo-school  <https://odoo.school/>`__
+More information  `Odoo-school <https://odoo.school/>`__
