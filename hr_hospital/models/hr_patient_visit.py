@@ -41,7 +41,7 @@ class HrPatientVisit(models.Model):
         store=True, index=True
     )
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals_list: dict) -> dict:
         is_done = vals_list.get("is_done", "")
         diagnosis_id = vals_list.get("diagnosis_id", "")

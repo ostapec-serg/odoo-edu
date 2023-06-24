@@ -34,22 +34,5 @@
         <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
     </record>
 
-<!--    Disease category demo-->
-    <record id="patient_demo_kyrylovich" model="hr.hospital.patient">
-        <field name="name">Kyrulo Kyrylovich</field>
-        <field name="desc">man</field>
-    </record>
-
-    <record id="patient_demo_hvoryi" model="hr.hospital.patient">
-        <field name="name">Hvorko Hvoryi</field>
-        <field name="sex">man</field>
-        <field name="doctor_id" ref="hr_hospital.doctor_demo_doctorovich"/>
-    </record>
-
-    <record id="patient_demo_zahvorivshyy" model="hr.hospital.patient">
-        <field name="name">Taras Zahvorivshyy</field>
-        <field name="sex">man</field>
-        <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
-    </record>
 
 </odoo>
