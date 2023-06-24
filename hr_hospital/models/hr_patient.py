@@ -27,7 +27,7 @@ class HrHospitalPatient(models.Model):
             diff = ((today.month, today.day) < (birthday.month, birthday.day))
             rec.age = today.year - birthday.year - diff
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals_list: dict) -> dict:
         result = super(HrHospitalPatient, self).create(vals_list)
         if result:
