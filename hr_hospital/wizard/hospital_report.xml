@@ -21,14 +21,14 @@
 
 
         <record id="hr_hospital_action_view_hospital_report" model="ir.actions.act_window">
-            <field name="name">Create report</field>
-            <field name="type">ir.actions.act_window</field>
+            <field name="name">Disease report</field>
             <field name="res_model">hr.hospital.hospital.report.wizard</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="hr_hospital_hospital_report_view_form"/>
-            <field name="binding_model_id" ref="model_hr_hospital_disease_report_wizard"/>
             <field name="target">new</field>
-        </record>
+            <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="binding_type">report</field>
+       </record>
 
         <menuitem id="hr_hospital_report_main_report"
                   parent="hr_hospital_report_main"
