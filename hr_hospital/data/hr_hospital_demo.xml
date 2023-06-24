@@ -1,0 +1,55 @@
+<?xm1 version="1.0" encoding "utf-8"?>
+<odoo noupdate="1">
+
+    <record id="doctor_demo_doctorovich" model="hr.hospital.doctor">
+        <field name="name">Doctor Doctorovich</field>
+        <field name="sex">man</field>
+    </record>
+
+    <record id="doctor_demo_likarovich" model="hr.hospital.doctor">
+        <field name="name">Likar Likarovich</field>
+        <field name="sex">man</field>
+    </record>
+
+    <record id="doctor_demo_hospital" model="hr.hospital.doctor">
+        <field name="name">Stepan Hospital</field>
+        <field name="sex">man</field>
+    </record>
+
+    <record id="patient_demo_kyrylovich" model="hr.hospital.patient">
+        <field name="name">Kyrulo Kyrylovich</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_likarovich"/>
+    </record>
+
+    <record id="patient_demo_hvoryi" model="hr.hospital.patient">
+        <field name="name">Hvorko Hvoryi</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_doctorovich"/>
+    </record>
+
+    <record id="patient_demo_zahvorivshyy" model="hr.hospital.patient">
+        <field name="name">Taras Zahvorivshyy</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
+    </record>
+
+<!--    Disease category demo-->
+    <record id="patient_demo_kyrylovich" model="hr.hospital.patient">
+        <field name="name">Kyrulo Kyrylovich</field>
+        <field name="desc">man</field>
+    </record>
+
+    <record id="patient_demo_hvoryi" model="hr.hospital.patient">
+        <field name="name">Hvorko Hvoryi</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_doctorovich"/>
+    </record>
+
+    <record id="patient_demo_zahvorivshyy" model="hr.hospital.patient">
+        <field name="name">Taras Zahvorivshyy</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
+    </record>
+
+</odoo>
