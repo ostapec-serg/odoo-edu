@@ -1,4 +1,5 @@
 from odoo import fields, models, api, _
+from odoo.addons.hr_hospital import constants as const
 
 
 class HrHospitalDoctor(models.Model):
@@ -8,11 +9,16 @@ class HrHospitalDoctor(models.Model):
     _parent_name = "parent_id"
     _order = "create_date"
 
-    specialty = fields.Char()
+    state = fields.Selection(
+        selection=const.DOCTOR_STATE_LIST,
+        default="draft",
+        string="Status"
+    )
+    specialty = fields.Char(required=True)
     parent_id = fields.Many2one(
         comodel_name="hr.hospital.doctor",
         domain="[('is_mentor', '=', True)]",
-        string="Doctor"
+        string="Mentor"
     )
     child_ids = fields.One2many(
         comodel_name="hr.hospital.doctor",
@@ -25,6 +31,19 @@ class HrHospitalDoctor(models.Model):
     )
     is_intern = fields.Boolean()
     is_mentor = fields.Boolean()
+    active = fields.Boolean(default=True)
+
+    @api.model
+    def create(self, vals_list):
+        vals_list['state'] = "active"
+        return super().create(vals_list)
+
+    def write(self, vals):
+        active = vals.get('active', "")
+        for rec in self:
+            if active is False:
+                rec.state = "arch"
+        return super().write(vals)
 
     @api.onchange('is_intern')
     def onchange_is_intern(self):

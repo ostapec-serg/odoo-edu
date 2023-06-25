@@ -4,16 +4,19 @@
     <record id="doctor_demo_doctorovich" model="hr.hospital.doctor">
         <field name="name">Doctor Doctorovich</field>
         <field name="sex">man</field>
+        <field name="specialty">General practitioner</field>
     </record>
 
     <record id="doctor_demo_likarovich" model="hr.hospital.doctor">
         <field name="name">Likar Likarovich</field>
         <field name="sex">man</field>
+        <field name="specialty">Genetic</field>
     </record>
 
     <record id="doctor_demo_hospital" model="hr.hospital.doctor">
         <field name="name">Stepan Hospital</field>
         <field name="sex">man</field>
+        <field name="specialty">Psychotherapist</field>
     </record>
 
     <record id="patient_demo_kyrylovich" model="hr.hospital.patient">
