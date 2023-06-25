@@ -1,5 +1,5 @@
 from odoo import fields, models, _
-from .hr_hospital import constants as const
+from odoo.addons.hr_hospital import constants as const
 
 
 class HrPerson(models.AbstractModel):

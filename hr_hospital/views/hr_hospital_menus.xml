@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
         <menuitem id="hr_hospital_menu_root"
                   web_icon="hr_hospital,static/description/icon.png"
                   name="Hospital"
@@ -18,16 +17,8 @@
                   parent="hr_hospital_menu_root"
                   name="Diseases" sequence="200" />
 
-        <menuitem id="hr_hospital_patient_menu"
-                  name="Patient" parent="hr_hospital_main_menu"
-                  action="hr_hospital_action_view_patient" sequence="150"/>
-
         <menuitem id="hr_hospital_report_main"
                   parent="hr_hospital_menu_root"
                   name="Reports" sequence="400" />
-
-        <menuitem id="hr_hospital_create_appointment_menu"
-                  name="Create Appointment" parent="hr_hospital_menu_root"
-                  action="hr_hospital_action_view_create_appointment" sequence="500"/>
 
 </odoo>

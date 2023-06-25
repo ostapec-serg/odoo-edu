@@ -13,8 +13,9 @@
                             <field name="email"/>
                             <field name="sex"/>
                             <field name="specialty"/>
-                            <field name="is_intern"/>
-                            <field name="parent_id" domain="[('is_intern', '=', False)]" attrs="{'invisible': [('is_intern', '=', False)], 'required': [('is_intern', '=', True)]}"/>
+                            <field name="is_mentor" attrs="{'invisible': [('is_intern', '=', True)]}"/>
+                            <field name="is_intern" attrs="{'invisible': [('is_mentor', '=', True)]}"/>
+                            <field name="parent_id" domain="[('is_mentor', '=', True)]" attrs="{'invisible': [('is_intern', '=', False)], 'required': [('is_intern', '=', True)]}"/>
                         </group>
                     </sheet>
                 </form>
@@ -31,7 +32,8 @@
                     <field name="email"/>
                     <field name="sex"/>
                     <field name="specialty"/>
-                    <field name="is_intern"/>
+                    <field name="is_mentor" attrs="{'invisible': [('is_intern', '=', True)]}"/>
+                    <field name="is_intern" attrs="{'invisible': [('is_mentor', '=', True)]}"/>
                     <field name="parent_id" attrs="{'invisible': [('is_intern', '=', False)], 'required': [('is_intern', '=', True)]}"/>
                 </tree>
             </field>
@@ -41,7 +43,7 @@
              <field name="name">hr_hospital_doctor_view_kanban</field>
               <field name="model">hr.hospital.doctor</field>
              <field name="arch" type="xml">
-                    <kanban class="o_kanban_mobile" default_groupe_by="specialty">
+                    <kanban class="o_kanban_mobile" default_groupe_by="specialty" quick_create_view="doctor_view_form">
                         <templates>
                              <t t-name="kanban-box">
                                  <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">

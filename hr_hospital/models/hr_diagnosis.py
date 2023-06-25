@@ -17,6 +17,11 @@ class HrHospitalDiagnosis(models.Model):
         comodel_name="hr.hospital.disease",
         string="Disease"
     )
+    # visit_id = fields.One2many(
+    #     comodel_name="hr.hospital.patient.visit",
+    #     inverse_name="patient_id",
+    #     domain=[("diagnosis_id", "=", "False")]
+    # )
     diagnosis_date = fields.Date()
     treatment = fields.Text()
     mentor_comment = fields.Text()
