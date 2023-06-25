@@ -14,10 +14,21 @@ class HrHospitalPatient(models.Model):
         comodel_name="hr.hospital.doctor",
         string="Attending doctor", required=True
     )
+    doctor_channing_ids = fields.One2many(
+        comodel_name="hr.hospital.history.changing.doctor",
+        inverse_name="patient_id",
+        string="Changed doctors"
+    )
+    diagnosis_ids = fields.One2many(
+        comodel_name="hr.hospital.diagnosis",
+        inverse_name="patient_id",
+        string="Diagnosis"
+    )
     passport = fields.Char()
     contact_person = fields.Many2one(
         comodel_name="hr.hospital.contact.person",
     )
+    active = fields.Boolean(default=True)
 
     @api.depends('birthday')
     def _compute_age(self) -> None:

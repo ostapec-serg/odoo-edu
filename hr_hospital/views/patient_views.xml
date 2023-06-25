@@ -1,84 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-        <record id="patient_view_form" model="ir.ui.view">
-            <field name="name">hr_hospital_patient_view_form</field>
-            <field name="model">hr.hospital.patient</field>
-            <field name="arch" type="xml">
-                <form string="Patient form">
-                    <sheet>
+    <record id="patient_view_form" model="ir.ui.view">
+        <field name="name">hr_hospital_patient_view_form</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <field name="img" class="oe_avatar" widget="image"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="e.g. Doctor name"/>
+                        </h1>
+                    </div>
+                    <group>
                         <group>
-                            <field name="name"/>
-                            <field name="phone"/>
-                            <field name="birthday"/>
-                            <field name="age"/>
-                            <field name="passport"/>
-                            <field name="email"/>
-                            <field name="sex"/>
+                            <group>
+                                <field name="birthday"/>
+                                <field name="phone"/>
+                                <field name="age"/>
+                            </group>
+                            <group>
+                                <field name="passport"/>
+                                <field name="email"/>
+                                <field name="sex"/>
+                            </group>
                         </group>
                         <group>
                             <field name="doctor_id"/>
                             <field name="contact_person"/>
                         </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
 
-        <record id="patient_view_tree" model="ir.ui.view">
-            <field name="name">hr_hospital_patient_view_tree</field>
-            <field name="model">hr.hospital.patient</field>
-            <field name="arch" type="xml">
-                <tree editable="top">
-                    <header>
-<!--                        <button name="%(hr_hospital.hr_hospital_action_view_change_doctor)d" type="action" string="Change doctor" class="oe_highlight"/>-->
-                        <button name="change_patient_doctor" type="object" string="Change doctor" class="oe_highlight"/>
-                    </header>
-                    <field name="name"/>
-                    <field name="phone"/>
-                    <field name="birthday"/>
-                    <field name="age"/>
-                    <field name="passport"/>
-                    <field name="email"/>
-                    <field name="sex"/>
-                    <field name="doctor_id"/>
-                    <field name="contact_person"/>
-                </tree>
-            </field>
-        </record>
+                    </group>
+                    <hr/>
+                    <group>
+                        <group>
+                            <button name="%(hr_hospital.hr_hospital_action_view_patient_visit)d"
+                                    type="action"
+                                    string="Visits"
+                                    class="oe_highlight"/>
+                        </group>
+                        <group>
+                            <button name="%(hr_hospital.hr_hospital_action_view_create_appointment)d"
+                                    type="action"
+                                    string="Appointment"
+                                    class="oe_highlight"
+                                    context="{'default_patient_id': active_id}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Doctors history" name="doctors_history" autofocus="autofocus">
+                            <field name="doctor_channing_ids">
+                                <tree create="false" delete="false">
+                                    <field name="patient_id" readonly="1"/>
+                                    <field name="doctor_id" readonly="1"/>
+                                    <field name="change_date" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Diagnosis history" name='diagnosis_history'>
+                            <field name="diagnosis_ids">
+                                <tree create="false" delete="false">
+                                    <field name="diagnosis_date"/>
+                                    <field name="patient_id"/>
+                                    <field name="doctor_id"/>
+                                    <field name="disease_id"/>
+                                    <field name="treatment" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <record id="patient_view_kanban" model="ir.ui.view">
-             <field name="name">hr_hospital_patient_view_kanban</field>
-              <field name="model">hr.hospital.patient</field>
-             <field name="arch" type="xml">
-                    <kanban class="o_kanban_mobile" default_groupe_by="name">
-                        <templates>
-                             <t t-name="kanban-box">
-                                 <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
-                                     <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('hr.hospital.patient', 'avatar_128', record.img)})" role="img"/>
-                                     <div class="oe_kanban_details d-flex flex-column justify-content-between">
-                                         <field name="name"/>
-                                        <field name="birthday"/>
-                                        <field name="age"/>
-                                        <field name="doctor_id"/>
-                                     </div>
-                                 </div>
-                             </t>
-                        </templates>
-                    </kanban>
-             </field>
-        </record>
-        
-        <record id="hr_hospital_action_view_patient" model="ir.actions.act_window">
-            <field name="name">Patients</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">hr.hospital.patient</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="view_id" ref="patient_view_kanban"/>
-        </record>
+    <record id="patient_view_tree" model="ir.ui.view">
+        <field name="name">hr_hospital_patient_view_tree</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <header>
+                    <button name="change_patient_doctor" type="object" string="Change doctor" class="oe_highlight"/>
+                </header>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="birthday"/>
+                <field name="age"/>
+                <field name="passport"/>
+                <field name="email"/>
+                <field name="sex"/>
+                <field name="doctor_id"/>
+                <field name="contact_person"/>
+            </tree>
+        </field>
+    </record>
 
-        <menuitem id="hr_hospital_patient_menu"
-            name="Patient" parent="hr_hospital_main_menu"
-            action="hr_hospital_action_view_patient" sequence="200"/>
+    <record id="patient_view_kanban" model="ir.ui.view">
+        <field name="name">hr_hospital_patient_view_kanban</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_groupe_by="name">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="o_kanban_image_fill_left o_kanban_image_full"
+                                 t-attf-style="background-image: url(#{kanban_image('hr.hospital.patient', 'avatar_128', record.img)})"
+                                 role="img"/>
+                            <div class="oe_kanban_details d-flex flex-column justify-content-between">
+                                <field name="name"/>
+                                <field name="birthday"/>
+                                <field name="age"/>
+                                <field name="doctor_id"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="hr_hospital_action_view_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.hospital.patient</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="patient_view_kanban"/>
+    </record>
+
+    <menuitem id="hr_hospital_patient_menu"
+              name="Patient" parent="hr_hospital_main_menu"
+              action="hr_hospital_action_view_patient" sequence="200"/>
 
 </odoo>

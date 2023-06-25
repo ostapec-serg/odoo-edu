@@ -5,6 +5,11 @@ STATE_LIST = [
     ("created", "Created"),
     ("done", "Done"),
 ]
+DOCTOR_STATE_LIST = [
+    ("draft", "Draft"),
+    ("active", "Active"),
+    ("arch", "Arch"),
+]
 
 SEX_LIST = [
     ('man', 'Man'),
