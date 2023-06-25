@@ -11,7 +11,7 @@ class HrHospitalDoctor(models.Model):
     specialty = fields.Char()
     parent_id = fields.Many2one(
         comodel_name="hr.hospital.doctor",
-        domain="[('is_intern', '=', False)]",
+        domain="[('is_mentor', '=', True)]",
         string="Doctor"
     )
     child_ids = fields.One2many(
@@ -24,6 +24,7 @@ class HrHospitalDoctor(models.Model):
         inverse_name="day_week"
     )
     is_intern = fields.Boolean()
+    is_mentor = fields.Boolean()
 
     @api.onchange('is_intern')
     def onchange_is_intern(self):

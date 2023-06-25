@@ -77,4 +77,8 @@
             <field name="view_id" ref="patient_view_kanban"/>
         </record>
 
+        <menuitem id="hr_hospital_patient_menu"
+            name="Patient" parent="hr_hospital_main_menu"
+            action="hr_hospital_action_view_patient" sequence="200"/>
+
 </odoo>

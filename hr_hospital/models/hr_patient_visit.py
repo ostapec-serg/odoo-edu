@@ -4,7 +4,7 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 
 # Is this good practice?
-from .hr_hospital import constants as const
+from odoo.addons.hr_hospital import constants as const
 
 
 _logger = logging.getLogger()
@@ -68,11 +68,6 @@ class HrPatientVisit(models.Model):
             if vals.get('visit_date', ""):
                 vals['patient_id'] = rec.id
                 self.is_available_time(vals)
-
-            #  need to remove
-            if not rec.visit_date_date:
-                vals['visit_date_date'] = rec.visit_date.date()
-
             if is_done:
                 diagnosis = vals.get('diagnosis_id', "") or rec.diagnosis_id
                 if not diagnosis:
@@ -96,21 +91,21 @@ class HrPatientVisit(models.Model):
         ]
 
     def add_diagnosis(self) -> dict:
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Add Diagnosis"),
-            "res_model": "hr.hospital.add.diagnosis.wizard",
-            "target": "new",
-            "views": [[False, "form"]],
-            "view_mode": "form",
-            'context': {
-                'default_doctor_id': self.doctor_id.id,
-                'default_patient_id': self.patient_id.id,
-                'default_is_intern':  self.is_intern,
-                'default_visit_id':  self.id,
+        for rec in self:
+            return {
+                "type": "ir.actions.act_window",
+                "name": _("Add Diagnosis"),
+                "res_model": "hr.hospital.add.diagnosis.wizard",
+                "target": "new",
+                "views": [[False, "form"]],
+                "view_mode": "form",
+                'context': {
+                    'default_doctor_id': rec.doctor_id.id,
+                    'default_patient_id': rec.patient_id.id,
+                    'default_is_intern':  rec.is_intern,
+                    'default_visit_id':  rec.id,
+                }
             }
-        }
 
     def is_available_time(self, vals_list: dict) -> bool:
         delta = const.delta
