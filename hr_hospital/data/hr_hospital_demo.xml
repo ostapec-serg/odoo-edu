@@ -19,23 +19,46 @@
         <field name="specialty">Psychotherapist</field>
     </record>
 
-    <record id="patient_demo_kyrylovich" model="hr.hospital.patient">
-        <field name="name">Kyrulo Kyrylovich</field>
+    <record id="patient_demo_april_o_neil" model="hr.hospital.patient">
+        <field name="name">April O'Neil</field>
+        <field name="sex">woman</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/april.png"/>
+    </record>
+
+    <record id="patient_demo_donatello" model="hr.hospital.patient">
+        <field name="name">Donatello</field>
         <field name="sex">man</field>
         <field name="doctor_id" ref="hr_hospital.doctor_demo_likarovich"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/Donatello.png"/>
     </record>
 
-    <record id="patient_demo_hvoryi" model="hr.hospital.patient">
-        <field name="name">Hvorko Hvoryi</field>
+    <record id="patient_demo_michelangelo" model="hr.hospital.patient">
+        <field name="name">Michelangelo</field>
         <field name="sex">man</field>
         <field name="doctor_id" ref="hr_hospital.doctor_demo_doctorovich"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/Michelangelo.png"/>
     </record>
 
-    <record id="patient_demo_zahvorivshyy" model="hr.hospital.patient">
-        <field name="name">Taras Zahvorivshyy</field>
+    <record id="patient_demo_raphael" model="hr.hospital.patient">
+        <field name="name">Raphael</field>
         <field name="sex">man</field>
         <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/Raphael.png"/>
     </record>
 
+    <record id="patient_demo_leonardo" model="hr.hospital.patient">
+        <field name="name">Leonardo</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_hospital"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/Leonardo.png"/>
+    </record>
+
+    <record id="patient_demo_splinter" model="hr.hospital.patient">
+        <field name="name">Splinter</field>
+        <field name="sex">man</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_demo_doctorovich"/>
+        <field name="img" type="base64" file="hr_hospital/static/img/Splinter.png"/>
+    </record>
 
 </odoo>

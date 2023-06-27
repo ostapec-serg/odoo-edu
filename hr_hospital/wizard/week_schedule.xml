@@ -8,9 +8,10 @@
                 <form string="Create week schedule">
                     <sheet>
                         <group>
+                            <field name="doctor_id"/>
                             <field name="week_start_date"/>
                             <field name="work_day_start"/>
-                            <field name="doctor_id"/>
+                            <field name="shift_duration"/>
                             <field name="is_even_or_odd" string=" " widget="radio" options="{'horizontal': true}"/>
                         </group>
                         <footer>

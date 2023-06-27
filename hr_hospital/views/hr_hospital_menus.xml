@@ -19,6 +19,10 @@
 
         <menuitem id="hr_hospital_report_main"
                   parent="hr_hospital_menu_root"
-                  name="Reports" sequence="400" />
+                  name="Reports" sequence="300" />
+
+        <menuitem id="hr_hospital_analysis_main"
+                  parent="hr_hospital_menu_root"
+                  name="Analysis" sequence="400" />
 
 </odoo>

@@ -1,6 +1,7 @@
-from datetime import timedelta
+from datetime import timedelta, datetime, time
 
-from odoo import fields, models
+from odoo import fields, models, api
+from odoo.addons.hr_hospital import constants as const
 
 
 class HrHospitalWeekScheduleWizard(models.TransientModel):
@@ -13,6 +14,11 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
         comodel_name="hr.hospital.doctor",
         required=True,
         ondelete="cascade"
+    )
+    shift_duration = fields.Selection(
+        selection=const.WORK_SHIFT_DURATION,
+        required=True,
+        default="8"
     )
     is_even_or_odd = fields.Selection(
         selection=[("even", "Even"), ("odd", "Odd")],
@@ -30,8 +36,9 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
                     params = {
                         "visit_date": week_start_date,
                         "day_week": week_start_date.strftime('%A'),
-                        "start_time": self.work_day_start,
+                        "start_time": week_start_date,
                         "doctor_id": self.doctor_id.id,
+                        "shift_duration": self.shift_duration,
                     }
                     self._create_schedule(params)
                 week_start_date = week_start_date + delta
@@ -41,8 +48,9 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
                     params = {
                         "visit_date": week_start_date,
                         "day_week": week_start_date.strftime('%A'),
-                        "start_time": self.work_day_start,
+                        "start_time": week_start_date,
                         "doctor_id": self.doctor_id.id,
+                        "shift_duration": self.shift_duration,
                     }
                     self._create_schedule(params)
                 week_start_date = week_start_date + delta
@@ -51,12 +59,12 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
                 params = {
                     "visit_date": week_start_date,
                     "day_week": week_start_date.strftime('%A'),
-                    "start_time": self.work_day_start,
+                    "start_time": week_start_date,
                     "doctor_id": self.doctor_id.id,
+                    "shift_duration": self.shift_duration,
                 }
                 self._create_schedule(params)
                 week_start_date = week_start_date + delta
-        raise
 
     def _create_schedule(self, params: dict):
         self.env['hr.hospital.doctor.schedule'].create({
@@ -66,5 +74,19 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
             "doctor_id": params['doctor_id'],
         })
 
+    @api.onchange('week_start_date', 'work_day_start')
+    @api.depends('week_start_date', 'work_day_start')
+    def _work_day_start(self):
+        if not self.work_day_start and self.week_start_date:
+            start_time = datetime.combine(
+                self.week_start_date, time(0, 0, 0)
+            )
+            self.work_day_start = start_time
+        elif self.work_day_start and self.week_start_date:
+            self.work_day_start = datetime.combine(
+                self.week_start_date, self.work_day_start.time()
+            )
+        else:
+            self.work_day_start = None
+
     # TODO Add doctor schedule checking
-    # TODO Add auto fill date to field 'work_day_start'

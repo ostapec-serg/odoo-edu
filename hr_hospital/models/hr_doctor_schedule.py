@@ -1,6 +1,8 @@
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 
 from odoo import fields, models, api
+
+from odoo.addons.hr_hospital import constants as const
 
 
 class HrHospitalDoctorSchedule(models.Model):
@@ -16,10 +18,25 @@ class HrHospitalDoctorSchedule(models.Model):
         string="Day of the week",
         compute="_compute_day_week",
     )
+    shift_duration = fields.Selection(
+        selection=const.WORK_SHIFT_DURATION,
+        required=True,
+        default="8"
+    )
     start_time = fields.Datetime()
+    shift_end_time = fields.Datetime(
+        compute="_compute_shift_end_time",
+        store=True
+    )
     doctor_id = fields.Many2one(
         comodel_name="hr.hospital.doctor",
-        ondelete="cascade"
+        ondelete="cascade",
+        required=True
+    )
+    # TODO Add to calendar view.
+    visit_ids = fields.One2many(
+        comodel_name="hr.hospital.patient.visit",
+        inverse_name="schedule_id"
     )
 
     @api.onchange('visit_date', 'start_time')
@@ -30,10 +47,10 @@ class HrHospitalDoctorSchedule(models.Model):
         """
         if self.visit_date:
             day_week = self.visit_date.strftime('%A')
-            self.day_week = day_week
+            self.day_week = day_week.capitalize()
             if not self.start_time:
                 start_time = datetime.combine(
-                    self.visit_date, time(0, 0)
+                    self.visit_date, time(0, 0, 0)
                 )
                 self.start_time = start_time
             elif self.start_time:
@@ -42,3 +59,24 @@ class HrHospitalDoctorSchedule(models.Model):
                 )
         else:
             self.day_week = None
+
+    def name_get(self) -> list:
+        return [
+            (schedule.id, f"[{schedule.visit_date}, "
+                          f"{schedule.doctor_id.name}]") for schedule in self
+        ]
+
+    @api.onchange('start_time', 'shift_duration')
+    @api.depends('start_time', 'shift_duration')
+    def _compute_shift_end_time(self):
+        for rec in self:
+            if rec.start_time and rec.shift_duration:
+                shift_duration = int(rec.shift_duration)
+                shift_end_delta = timedelta(
+                    hours=shift_duration, minutes=00, seconds=00
+                )
+                rec.shift_end_time = rec.start_time + shift_end_delta
+            else:
+                rec.shift_end_time = None
+
+    # TODO Add doctor new schedule checking method.

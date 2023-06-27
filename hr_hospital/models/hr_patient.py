@@ -24,6 +24,11 @@ class HrHospitalPatient(models.Model):
         inverse_name="patient_id",
         string="Diagnosis"
     )
+    analysis_history = fields.One2many(
+        comodel_name="hr.hospital.analysis.card",
+        inverse_name="patient_id",
+        string="Analysis history"
+    )
     passport = fields.Char()
     contact_person = fields.Many2one(
         comodel_name="hr.hospital.contact.person",

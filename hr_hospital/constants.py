@@ -23,8 +23,10 @@ VISIT_DURATION = datetime.timedelta(
 )
 
 # Duration of one doctor shift. -> hours, minutes, second.
-WORK_DAY_DURATION = datetime.timedelta(
-    hours=8, minutes=00, seconds=00
-)
+WORK_SHIFT_DURATION = [
+    ("3", '3 hour'),
+    ("6", '6 hours'),
+    ("8", '8 hours')
+]
 
 delta = datetime.timedelta(seconds=1)
