@@ -1,5 +1,6 @@
 from odoo import fields, models, api, _
 from odoo.addons.hr_hospital import constants as const
+from odoo.exceptions import ValidationError
 
 
 class HrHospitalDoctor(models.Model):
@@ -27,7 +28,7 @@ class HrHospitalDoctor(models.Model):
     )
     schedule = fields.One2many(
         comodel_name="hr.hospital.doctor.schedule",
-        inverse_name="day_week"
+        inverse_name="doctor_id"
     )
     is_intern = fields.Boolean()
     is_mentor = fields.Boolean()
@@ -49,3 +50,8 @@ class HrHospitalDoctor(models.Model):
     def onchange_is_intern(self):
         if not self.is_intern:
             self.parent_id = False
+
+    @api.constrains('parent_id')
+    def _check_mentor_recursion(self):
+        if not self._check_recursion():
+            raise ValidationError(_('You cannot create intern recursive.'))

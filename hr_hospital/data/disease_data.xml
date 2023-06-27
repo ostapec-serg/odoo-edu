@@ -2,44 +2,39 @@
 <odoo>
 
     <record id="disease_data_genetic" model="hr.hospital.disease.category" forcecreate="True">
-        <field name="name">Genetic disease</field>
+        <field name="name">disease_3</field>
+        <field name="parent_id">Genetic disease</field>
         <field name="desc">A genetic disorder or disease is caused by one or more genetic mutations.
             It is often inherited, but some mutations are random and de novo.</field>
     </record>
 
     <record id="disease_data_chronic_disease" model="hr.hospital.disease.category" forcecreate="True">
-        <field name="name">Chronic disease</field>
+        <field name="name">disease_2</field>
+        <field name="parent_id">Chronic disease</field>
         <field name="desc">A chronic disease is one that persists over time,
             often for at least six months, but may also include illnesses
             that are expected to last for the entirety of one's natural life.</field>
     </record>
 
     <record id="disease_data_acquired" model="hr.hospital.disease.category" forcecreate="True">
-        <field name="name">Acquired disease</field>
+        <field name="name">disease_1</field>
+        <field name="parent_id">Acquired disease</field>
         <field name="desc">An acquired disease is one that began at some point during one's lifetime,
             as opposed to disease that was already present at birth, which is congenital disease.
             Acquired sounds like it could mean "caught via contagion",
             but it simply means acquired sometime after birth.</field>
     </record>
 
-    <record id="disease_data_01" model="hr.hospital.disease" forcecreate="True">
-        <field name="name">disease_1</field>
-        <field name="parent_id" ref="hr_hospital.disease_data_acquired"/>
-    </record>
+<!--v-->
 
-    <record id="disease_data_02" model="hr.hospital.disease" forcecreate="True">
-        <field name="name">disease_2</field>
-        <field name="parent_id" ref="hr_hospital.disease_data_genetic"/>
-    </record>
+<!--    <record id="disease_data_03" model="hr.hospital.disease" forcecreate="True">-->
+<!--        <field name="name">disease_4</field>-->
+<!--        <field name="parent_id" ref="hr_hospital.disease_data_chronic_disease"/>-->
+<!--    </record>-->
 
-    <record id="disease_data_03" model="hr.hospital.disease" forcecreate="True">
-        <field name="name">disease_4</field>
-        <field name="parent_id" ref="hr_hospital.disease_data_chronic_disease"/>
-    </record>
-
-    <record id="disease_data_04" model="hr.hospital.disease" forcecreate="True">
-        <field name="name">disease_3</field>
-        <field name="parent_id" ref="hr_hospital.disease_data_genetic"/>
-    </record>
+<!--    <record id="disease_data_04" model="hr.hospital.disease" forcecreate="True">-->
+<!--        <field name="name">disease_3</field>-->
+<!--        <field name="parent_id" ref="hr_hospital.disease_data_genetic"/>-->
+<!--    </record>-->
 
 </odoo>

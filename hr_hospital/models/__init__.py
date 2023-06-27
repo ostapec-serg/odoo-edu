@@ -8,3 +8,4 @@ from . import hr_disease
 from . import hr_diagnosis
 from . import hr_history_changing_doctor
 from . import hr_disease_category
+from . import hr_analysis
