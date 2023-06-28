@@ -13,7 +13,8 @@
                             <field name="patient_id" readonly="1"/>
                             <field name="doctor_id" readonly="1"/>
                             <field name="diagnosis_date"/>
-                            <field name="disease_id"/>
+                            <field name="analysis_id"/>
+                            <field name="disease_id" required="1"/>
                             <field name="treatment"/>
                             <field name="mentor_comment" attrs="{'invisible': [('is_intern', '=', False)]}"/>
                         </group>
