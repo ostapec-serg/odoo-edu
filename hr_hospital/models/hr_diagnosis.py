@@ -17,6 +17,9 @@ class HrHospitalDiagnosis(models.Model):
         comodel_name="hr.hospital.disease",
         string="Disease"
     )
+    analysis_id = fields.Many2one(
+        comodel_name="hr.hospital.analysis.card"
+    )
     diagnosis_date = fields.Date()
     treatment = fields.Text()
     mentor_comment = fields.Text()

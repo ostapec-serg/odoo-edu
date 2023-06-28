@@ -9,7 +9,7 @@ class HrPerson(models.AbstractModel):
     name = fields.Char(required=True)
     phone = fields.Char()
     email = fields.Char()
-    img = fields.Image()
+    img = fields.Image(max_width=128, max_height=128)
     sex = fields.Selection(
         selection=const.SEX_LIST, required=True
     )

@@ -119,11 +119,11 @@
                                 <field name="parent_id" domain="[('is_intern', '=', False)]"
                                        attrs="{'invisible': [('is_intern', '=', False)]}"/>
                                 <button name="%(hr_hospital.hr_hospital_action_view_create_appointment)d"
-                                        type="action"
-                                        string="Appointment"
-                                        class="oe_highlight"
-                                        context="{'default_doctor_id': active_id}"
-                                        domain="[('doctor_id', '=', active_id)]"/>
+                                    type="action"
+                                    string="Appointment"
+                                    class="oe_highlight"
+                                    context="{'default_doctor_id': active_id}"
+                                    />
                             </div>
                         </div>
                     </t>
@@ -133,26 +133,25 @@
     </record>
 
     <record id="doctor_view_search" model="ir.ui.view">
-        <field name="name">doctor.view.search.search.inherited</field>
-        <field name="model">hr.hospital.doctor</field>
-        <field name="arch" type="xml">
-            <search>
+            <field name="name">doctor.view.search.search.inherited</field>
+            <field name="model">hr.hospital.doctor</field>
+            <field name="arch" type="xml">
+                <search>
                 <separator/>
-                <filter string="Mentors" name="is_mentor" domain="[('is_mentor', '=', True)]"/>
-                <filter string="Interns" name="is_intern" domain="[('is_intern', '=', True)]"/>
-                <filter string="Nothing" name="nothing"
-                        domain="[('is_intern', '=', False), ('is_mentor', '=', False)]"/>
+                    <filter string="Mentors" name="is_mentor" domain="[('is_mentor', '=', True)]"/>
+                    <filter string="Interns" name="is_intern" domain="[('is_intern', '=', True)]"/>
+                    <filter string="Nothing" name="nothing" domain="[('is_intern', '=', False), ('is_mentor', '=', False)]"/>
                 <separator/>
             </search>
-        </field>
-    </record>
+            </field>
+        </record>
 
     <record id="hr_hospital_action_view_doctor" model="ir.actions.act_window">
         <field name="name">Doctors</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.hospital.doctor</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="search_view_id" ref="hr_hospital.doctor_view_search"/>
+        <field name="search_view_id" ref="hr_hospital.doctor_view_search" />
         <field name="view_id" ref="doctor_view_kanban"/>
     </record>
 

@@ -14,9 +14,12 @@ class HrHospitalAddDiagnosisWizard(models.TransientModel):
         required=True
     )
     disease_id = fields.Many2one(
-        comodel_name="hr.hospital.disease",
+        comodel_name="hr.hospital.disease.category",
         string="Disease",
-        required=True
+        index=True,
+    )
+    analysis_id = fields.Many2one(
+        comodel_name="hr.hospital.analysis.card"
     )
     treatment = fields.Text(required=True)
     mentor_comment = fields.Text()
@@ -27,6 +30,7 @@ class HrHospitalAddDiagnosisWizard(models.TransientModel):
         for rec in self:
             result = self.env["hr.hospital.diagnosis"].create({
                 'disease_id': rec.disease_id.id,
+                'analysis_id': rec.analysis_id.id,
                 'patient_id': rec.patient_id.id,
                 'doctor_id': rec.doctor_id.id,
                 'diagnosis_date': rec.diagnosis_date,

@@ -12,7 +12,7 @@
 
     'data': [
         'security/ir.model.access.csv',
-        #'data/disease_data.xml',
+        'data/disease_data.xml',
         'views/hr_hospital_menus.xml',
         'views/diagnosis_views.xml',
         'wizard/create_appointment.xml',
@@ -22,6 +22,8 @@
         'wizard/hospital_report.xml',
         'wizard/week_schedule.xml',
         'views/doctor_views.xml',
+        'views/analysis_views.xml',
+        'views/analysis_card_views.xml',
         'views/patient_visit_views.xml',
         'views/patient_views.xml',
         'views/disease_views.xml',
@@ -29,8 +31,6 @@
         'views/contact_person_views.xml',
         'views/doctor_schedule_views.xml',
         'views/hr_history_changing_doctor.xml',
-        'views/analysis_views.xml',
-        'views/analysis_card_views.xml',
     ],
 
     'demo': [

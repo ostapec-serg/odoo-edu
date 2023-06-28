@@ -7,7 +7,7 @@ class HrHospitalMedAnalysis(models.Model):
 
     name = fields.Char()
     price = fields.Float()
-    # analysis_type = fields.Many2one()
+    active = fields.Boolean(default=True)
 
 
 class HrHospitalAnalysisCard(models.Model):
