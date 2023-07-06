@@ -33,13 +33,19 @@ class HrHospitalDoctor(models.Model):
     is_intern = fields.Boolean()
     is_mentor = fields.Boolean()
     active = fields.Boolean(default=True)
+    patient_ids = fields.One2many(
+        comodel_name="hr.hospital.patient",
+        inverse_name="doctor_id"
+    )
 
     @api.model
     def create(self, vals_list):
+        """ Creates new records for the model. """
         vals_list['state'] = "active"
         return super().create(vals_list)
 
     def write(self, vals):
+        """ Updates all records in ``self`` with the provided values. """
         active = vals.get('active', "")
         for rec in self:
             if active is False:
@@ -48,10 +54,12 @@ class HrHospitalDoctor(models.Model):
 
     @api.onchange('is_intern')
     def onchange_is_intern(self):
+        """ Fronend method to change field 'is_intern' """
         if not self.is_intern:
             self.parent_id = False
 
     @api.constrains('parent_id')
     def _check_mentor_recursion(self):
+        """ Check recursion for mentor """
         if not self._check_recursion():
             raise ValidationError(_('You cannot create intern recursive.'))

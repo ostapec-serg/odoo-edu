@@ -1,7 +1,7 @@
 import logging
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 
 # Is this good practice?
 from odoo.addons.hr_hospital import constants as const
@@ -77,12 +77,16 @@ class HrPatientVisit(models.Model):
                 diagnosis = vals.get('diagnosis_id', "") or rec.diagnosis_id
                 if not diagnosis:
                     _logger.error("Visit cant be done with out diagnosis")
-                    raise ValidationError(_("Visit cant be done with out diagnosis"))
+                    raise ValidationError(
+                        _("Visit cant be done with out diagnosis")
+                    )
                 vals['state'] = 'done'
 
             elif is_done and rec.active:
                 _logger.error("You can't arch visits that already done!")
-                raise ValidationError(_("You can't arch visits that already done!"))
+                raise ValidationError(
+                    _("You can't arch visits that already done!")
+                )
         return super().write(vals)
 
     @api.onchange('visit_date')
@@ -117,21 +121,21 @@ class HrPatientVisit(models.Model):
         ]
 
     def add_diagnosis(self) -> dict:
-        for rec in self:
-            return {
-                "type": "ir.actions.act_window",
-                "name": _("Add Diagnosis"),
-                "res_model": "hr.hospital.add.diagnosis.wizard",
-                "target": "new",
-                "views": [[False, "form"]],
-                "view_mode": "form",
-                'context': {
-                    'default_doctor_id': rec.doctor_id.id,
-                    'default_patient_id': rec.patient_id.id,
-                    'default_is_intern': rec.is_intern,
-                    'default_visit_id': rec.id,
-                }
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Add Diagnosis"),
+            "res_model": "hr.hospital.add.diagnosis.wizard",
+            "target": "new",
+            "views": [[False, "form"]],
+            "view_mode": "form",
+            'context': {
+                'default_doctor_id': self.doctor_id.id,
+                'default_patient_id': self.patient_id.id,
+                'default_is_intern': self.is_intern,
+                'default_visit_id': self.id,
             }
+        }
 
     def is_available_time(self, vals_list: dict) -> bool:
         delta = const.delta
@@ -153,9 +157,8 @@ class HrPatientVisit(models.Model):
                 if not work_start < (start or end) < work_end:
                     _logger.warning(_("Specified time out of schedule"))
                     raise ValidationError(
-                        _(f"Specified time out "
-                          f"of schedule. Choose another time!"
-                          )
+                        _("Specified time out "
+                          "of schedule. Choose another time!")
                     )
             visits = self.env[
                 'hr.hospital.patient.visit'

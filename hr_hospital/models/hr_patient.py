@@ -37,6 +37,7 @@ class HrHospitalPatient(models.Model):
 
     @api.depends('birthday')
     def _compute_age(self) -> None:
+        """ Compute patient age base on birthday field """
         for rec in self:
             today = datetime.today().date()
             birthday = rec.birthday or today
@@ -45,12 +46,14 @@ class HrHospitalPatient(models.Model):
 
     @api.model
     def create(self, vals_list: dict) -> dict:
+        """ Creates new records for the model. """
         result = super(HrHospitalPatient, self).create(vals_list)
         if result:
             self._history_change(result)
         return result
 
     def write(self, vals: dict) -> bool:
+        """ Updates all records in ``self`` with the provided values. """
         result = super().write(vals)
         if result:
             self._history_change()
@@ -58,6 +61,10 @@ class HrHospitalPatient(models.Model):
 
     @api.model
     def _history_change(self, val=None) -> None:
+        """
+        Create new record in 'hr.hospital.history.changing.doctor' model
+        when patient change attending doctor
+        """
         patients = val or self
         for patient in patients:
             self.env["hr.hospital.history.changing.doctor"].create({
@@ -67,6 +74,9 @@ class HrHospitalPatient(models.Model):
             })
 
     def change_patient_doctor(self) -> dict:
+        """
+        Method change attending doctor for patient
+        """
         patients_ids = []
         for rec in self:
             patients_ids.append(rec.id)
