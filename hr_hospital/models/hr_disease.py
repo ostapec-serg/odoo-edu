@@ -10,9 +10,8 @@ class HrDiseaseCategory(models.Model):
     _rec_name = 'complete_name'
     _order = 'complete_name'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(required=True)
     complete_name = fields.Char(
-        string='Complete Name',
         compute='_compute_complete_name',
         recursive=True, store=True
     )
@@ -26,6 +25,7 @@ class HrDiseaseCategory(models.Model):
 
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
+        """ Compute complete name """
         for category in self:
             if category.parent_id:
                 name = f"{category.parent_id.complete_name}/{category.name}"
@@ -35,14 +35,17 @@ class HrDiseaseCategory(models.Model):
 
     @api.constrains('parent_id')
     def _check_category_recursion(self):
+        """ Check recursion for disease category  """
         if not self._check_recursion():
             raise ValidationError(_('You cannot create recursive categories.'))
 
     @api.model
     def name_create(self, name):
+        """ Create name """
         return self.create({'name': name}).name_get()[0]
 
     def name_get(self):
+        """ Build display name """
         if not self.env.context.get('hierarchical_naming', True):
             return [(record.id, record.name) for record in self]
         return super().name_get()
@@ -64,4 +67,5 @@ class HrHospitalDisease(models.Model):
     active = fields.Boolean(default=True)
 
     def name_get(self):
+        """ Build display name """
         return [(record.id, record.disease_id.name) for record in self]

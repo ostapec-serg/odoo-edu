@@ -107,9 +107,11 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
-                            <div class="o_kanban_image_fill_left o_kanban_image_full"
-                                 t-attf-style="background-image: url(#{kanban_image('hr.hospital.doctor', 'avatar_128', record.img)})"
-                                 role="img"/>
+                            <field name="img"
+                                   options="{'placeholder': '/lunch/static/img/lunch.png', 'size': [94, 94]}"
+                                   class="oe_avatar"
+                                   widget="image"
+                                   style="margin-right: 10px"/>
                             <div class="oe_kanban_details d-flex flex-column justify-content-between">
                                 <field name="is_intern" invisible="1"/>
                                 <field name="name"/>

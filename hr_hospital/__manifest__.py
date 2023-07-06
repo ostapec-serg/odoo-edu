@@ -1,6 +1,7 @@
+# See LICENSE file for full copyright and licensing details.
 {
     'name': 'Hospital',
-    'version': '16.0.2.1.0',
+    'version': '16.0.3.1.0',
     'category': 'Customization',
     'summary': 'Maintaining records of doctors and patients',
 
@@ -8,6 +9,7 @@
     'website': 'https://t.me/ostapec_serg',
 
     'depends': [
+        'base',
     ],
 
     'data': [
@@ -31,6 +33,8 @@
         'views/contact_person_views.xml',
         'views/doctor_schedule_views.xml',
         'views/hr_history_changing_doctor.xml',
+        'reports/doctor_report_templates.xml',
+        'reports/report.xml',
     ],
 
     'demo': [
@@ -41,6 +45,8 @@
         'static/description/icon.png',
     ],
 
+    'price': 99.0,
+    'currency': 'EUR',
     'license': 'LGPL-3',
     'installable': True,
     'application': False,

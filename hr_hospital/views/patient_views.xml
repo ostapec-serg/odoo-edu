@@ -115,19 +115,16 @@
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile" default_groupe_by="name">
+                <field name="id"/>
+                <field name="img"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
-                            <t t-if="record.img">
-                                <div class="o_kanban_image_fill_left o_kanban_image_full"
-                                     t-attf-style="background-image: url({kanban_image('hr.hospital.patient', 'img', record.id)})"
-                                     role="img"/>
-                            </t>
-                            <t t-else="">
-                                <div class="o_kanban_image_fill_left o_kanban_image_full"
-                                     t-attf-style="background-image: url({kanban_image('hr.hospital.patient', 'img', record.id)})"
-                                     role="img"/>
-                            </t>
+                            <field name="img"
+                                   options="{'placeholder': '/lunch/static/img/lunch.png', 'size': [94, 94]}"
+                                   class="oe_avatar"
+                                   widget="image"
+                                   style="margin-right: 10px"/>
                             <div class="oe_kanban_details d-flex flex-column justify-content-between">
                                 <field name="name"/>
                                 <field name="birthday"/>

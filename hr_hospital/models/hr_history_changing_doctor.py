@@ -18,6 +18,7 @@ class HrHospitalHistoryChangingDoctor(models.Model):
     )
 
     def name_get(self) -> list:
+        """ Build display name """
         return [
             (change.change_date, change.patient_id.name) for change in self
         ]

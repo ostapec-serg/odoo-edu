@@ -1,7 +1,6 @@
 from datetime import datetime, time, timedelta
 
 from odoo import fields, models, api
-
 from odoo.addons.hr_hospital import constants as const
 
 
@@ -61,6 +60,7 @@ class HrHospitalDoctorSchedule(models.Model):
             self.day_week = None
 
     def name_get(self) -> list:
+        """ Build display name """
         return [
             (schedule.id, f"[{schedule.visit_date}, "
                           f"{schedule.doctor_id.name}]") for schedule in self

@@ -26,10 +26,12 @@ class HrHospitalDiagnosis(models.Model):
     is_intern = fields.Boolean(compute="_compute_is_intern")
 
     def _compute_is_intern(self) -> None:
+        """ Compute is doctor intern or not """
         for rec in self:
             rec.is_intern = rec.doctor_id.is_intern
 
     def name_get(self) -> list:
+        """ Build display name """
         return [
             (diagnosis.id, diagnosis.diagnosis_date) for diagnosis in self
         ]
