@@ -43,6 +43,7 @@ class HrHospitalDoctorSchedule(models.Model):
     def _compute_day_week(self):
         # TODO re-write method
         """
+        Compute dy of the week based on visit_date field
         """
         if self.visit_date:
             day_week = self.visit_date.strftime('%A')
@@ -69,6 +70,10 @@ class HrHospitalDoctorSchedule(models.Model):
     @api.onchange('start_time', 'shift_duration')
     @api.depends('start_time', 'shift_duration')
     def _compute_shift_end_time(self):
+        """
+        Computing shift end time depends on
+        shift duration and shift start
+        """
         for rec in self:
             if rec.start_time and rec.shift_duration:
                 shift_duration = int(rec.shift_duration)

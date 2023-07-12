@@ -27,6 +27,9 @@ class HrHospitalAddDiagnosisWizard(models.TransientModel):
     visit_id = fields.Integer()
 
     def add_diagnosis(self):
+        """
+        Create diagnosis record
+        """
         for rec in self:
             result = self.env["hr.hospital.diagnosis"].create({
                 'disease_id': rec.disease_id.id,
@@ -40,6 +43,7 @@ class HrHospitalAddDiagnosisWizard(models.TransientModel):
             if result:
                 vals = {
                     "diagnosis_id": result.id,
+                    # If True, visit state become -> 'done' automatically
                     'is_done': True  # optional
                 }
                 visit = self.env[
@@ -49,6 +53,9 @@ class HrHospitalAddDiagnosisWizard(models.TransientModel):
 
     @api.onchange('diagnosis_date')
     def _onchange_date(self):
+        """
+        Onchange method to change diagnosis date
+        """
         for rec in self:
             date_now = fields.Datetime.now().date()
             if rec.diagnosis_date:

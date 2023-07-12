@@ -46,7 +46,7 @@ class HrHospitalPatient(models.Model):
 
     @api.model
     def create(self, vals_list: dict) -> dict:
-        """ Creates new records for the model. """
+        """ Creates new records for the model """
         result = super(HrHospitalPatient, self).create(vals_list)
         if result:
             self._history_change(result)

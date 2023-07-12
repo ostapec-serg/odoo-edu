@@ -21,6 +21,10 @@ class HrHospitalHospitalReportWizard(models.TransientModel):
     report_date = fields.Date(string="Report date")
 
     def create_report(self):
+        """
+        Create record for `hr.hospital.hospital.report.wizard`
+        model
+        """
         self.ensure_one()
         delta = relativedelta(months=1, day=1)
         report_date = fields.Date.to_date(self.report_date)

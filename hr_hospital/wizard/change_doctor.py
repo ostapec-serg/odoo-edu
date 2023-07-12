@@ -14,6 +14,9 @@ class HrHospitalChangeDoctorWizard(models.TransientModel):
     )
 
     def change_doctor(self):
+        """
+        Method for changing doctor for patient
+        """
         self.ensure_one()
         doctor_id = self.doctor_id.id
         self.env["hr.hospital.patient"].search([('id', '=', self.id)]).write({
