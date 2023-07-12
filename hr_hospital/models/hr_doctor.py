@@ -54,7 +54,7 @@ class HrHospitalDoctor(models.Model):
 
     @api.onchange('is_intern')
     def onchange_is_intern(self):
-        """ Fronend method to change field 'is_intern' """
+        """ Frontend method to change field 'is_intern' """
         if not self.is_intern:
             self.parent_id = False
 

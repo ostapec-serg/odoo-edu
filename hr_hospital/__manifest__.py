@@ -1,7 +1,7 @@
 # See LICENSE file for full copyright and licensing details.
 {
     'name': 'Hospital',
-    'version': '16.0.3.1.0',
+    'version': '16.0.3.2.0',
     'category': 'Customization',
     'summary': 'Maintaining records of doctors and patients',
 
@@ -13,7 +13,9 @@
     ],
 
     'data': [
+        'security/hr_hospital_groups.xml',
         'security/ir.model.access.csv',
+        'security/disease_security.xml',
         'data/disease_data.xml',
         'views/hr_hospital_menus.xml',
         'views/diagnosis_views.xml',

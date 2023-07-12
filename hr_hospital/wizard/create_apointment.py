@@ -20,6 +20,10 @@ class HrHospitalCreateAppointmentWizard(models.TransientModel):
     )
 
     def create_appointment(self):
+        """
+        Quick create visit
+        :raise UserError: If appointment created in the past
+        """
         self.ensure_one()
         for rec in self:
             if rec.visit_date.date() >= fields.Datetime.now().date():

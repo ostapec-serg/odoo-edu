@@ -38,7 +38,7 @@ class HrPatientVisit(models.Model):
         string="Visit end time",
         compute='_compute_visit_end_time'
     )
-    # For easier searching. Maybe wrong way
+    # For easier searching
     visit_date_date = fields.Date(
         compute='_compute_visit_date_date',
         store=True, index=True
@@ -47,9 +47,11 @@ class HrPatientVisit(models.Model):
         comodel_name="hr.hospital.doctor.schedule",
         ondelete="cascade",
     )
+    user_id = fields.Many2one('res.users', 'Salesperson', default=6)
 
     @api.model
     def create(self, vals_list: dict) -> dict:
+        """ Creates new records for the model """
         self.is_valid_fields(vals_list)
         self.is_available_time(vals_list)
         vals_list['state'] = "created"
@@ -60,6 +62,13 @@ class HrPatientVisit(models.Model):
         return super().create(vals_list)
 
     def unlink(self) -> bool:
+        """
+        Deletes the records in ``self``.
+
+        :raise AccessError: if the user is not allowed to delete all the given records
+        :raise UserError: if the record is default property for other records
+        :raise ValidationError: if the record state == 'done'
+        """
         for rec in self:
             if rec.is_done:
                 raise ValidationError(
@@ -68,6 +77,9 @@ class HrPatientVisit(models.Model):
         return super().unlink()
 
     def write(self, vals: dict) -> bool:
+        """
+        Updates all records in ``self`` with the provided values.
+        """
         is_done = vals.get('is_done', "")
         for rec in self:
             if vals.get('visit_date', ""):
@@ -92,6 +104,9 @@ class HrPatientVisit(models.Model):
     @api.onchange('visit_date')
     @api.depends('visit_date')
     def _compute_visit_date_date(self) -> None:
+        """
+        Compute visit date for easier searching
+        """
         for rec in self:
             if rec.visit_date:
                 rec.visit_date_date = rec.visit_date.date()
@@ -100,12 +115,19 @@ class HrPatientVisit(models.Model):
 
     @api.depends('doctor_id')
     def _compute_is_intern(self) -> None:
+        """
+        Compute is doctor intern
+        """
         for rec in self:
             rec.is_intern = rec.doctor_id.is_intern
 
     @api.onchange('visit_date')
     @api.depends('visit_date')
     def _compute_visit_end_time(self):
+        """
+        Computing visit end time depends on
+        VISIT_DURATION constant
+        """
         for rec in self:
             if rec.visit_date:
                 duration = const.VISIT_DURATION
@@ -115,12 +137,20 @@ class HrPatientVisit(models.Model):
                 rec.visit_end_time = None
 
     def name_get(self) -> list:
+        """
+        Build display name
+        """
         return [
             (visit.id, f"[{visit.visit_date}, "
                        f"{visit.patient_id.name}]") for visit in self
         ]
 
     def add_diagnosis(self) -> dict:
+        """
+        Add diagnosis action
+
+        :return dict: Action for adding diagnosis
+        """
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -138,6 +168,15 @@ class HrPatientVisit(models.Model):
         }
 
     def is_available_time(self, vals_list: dict) -> bool:
+        """
+        Checking available visit time
+
+        :param vals_list: values for creating visit
+        :raise ValidationError: if specified time out of schedule
+        :raise ValidationError: if specified time is busy
+        :raise ValidationError: if no schedule was found
+        :return True
+        """
         delta = const.delta
         visit_date = fields.Datetime.to_datetime(
             vals_list.get("visit_date"))
@@ -148,12 +187,16 @@ class HrPatientVisit(models.Model):
             ('doctor_id', '=', doctor_id),
             ('visit_date', '=', visit_date)
         ])
+
+        # Check if any schedule exist
         if schedules:
             for schedule in schedules:
                 work_start = schedule.start_time
                 work_end = schedule.shift_end_time
                 start = visit_date
                 end = start + const.VISIT_DURATION
+                # Checkin whether the specified time falls within the
+                # doctor's work schedule
                 if not work_start < (start or end) < work_end:
                     _logger.warning(_("Specified time out of schedule"))
                     raise ValidationError(
@@ -165,14 +208,18 @@ class HrPatientVisit(models.Model):
             ].search([
                 ('doctor_id', '=', doctor_id),
                 ('visit_date_date', '=', visit_date)])
+            # Check if any visit exist
             if visits:
                 for visit in visits:
                     visit_start = visit.visit_date
                     visit_end = const.VISIT_DURATION
                     start = visit_date + delta
                     end = start + const.VISIT_DURATION - delta
+                    # Checkin whether the specified time does not
+                    # overlap with existing visits
                     if start < (visit_start or visit_end) < end:
-                        _logger.warning(_("Specified time out of schedule"))
+                        _logger.warning(_("Specified time is busy."
+                                          "Choose another time!"))
                         raise ValidationError(
                             _("Specified time is busy!"
                               " Choose another time!"
@@ -182,6 +229,9 @@ class HrPatientVisit(models.Model):
         raise ValidationError(_("No schedule found!"))
 
     def change_visit_action(self) -> dict:
+        """
+        Update visit date action
+        """
         record = {"type": "ir.actions.act_window",
                   "name": _("Change Visit Time"),
                   "res_model": "hr.hospital.change.visit.time.wizard",
@@ -194,6 +244,13 @@ class HrPatientVisit(models.Model):
         return record
 
     def _get_schedule_id(self, vals_list: dict) -> int:
+        """
+        Check if schedule exist for the current doctor
+        And return id of that schedule
+
+        :param vals_list: values for creating visit
+        :raise ValidationError: if schedule not found
+        """
         delta = const.delta
         visit_date = vals_list.get('visit_date')
         visit_time = fields.Datetime.to_datetime(visit_date) - delta
@@ -214,12 +271,25 @@ class HrPatientVisit(models.Model):
         )
 
     def get_patient_doctor_id(self, patient_id: int) -> int:
+        """
+        Get doctor id
+
+        :param patient_id: id of the patient for
+                            whom we are looking for a doctor id
+        :return doctor_id.id: Attending doctor id
+        """
         doctor_id = self.env[
             'hr.hospital.patient'
         ].browse(patient_id).doctor_id
         return doctor_id.id
 
     def is_valid_fields(self, vals_list: dict) -> bool:
+        """
+        Check fields from vals_list
+
+        :param vals_list: values for creating visit
+        :raise ValidationError: if visit is done without  diagnosis
+        """
         is_done = vals_list.get("is_done", "")
         diagnosis_id = vals_list.get("diagnosis_id", "")
         if is_done and not diagnosis_id:

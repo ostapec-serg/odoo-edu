@@ -10,10 +10,10 @@ class HrDiseaseCategory(models.Model):
     _rec_name = 'complete_name'
     _order = 'complete_name'
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     complete_name = fields.Char(
         compute='_compute_complete_name',
-        recursive=True, store=True
+        recursive=True, store=True, translate=True
     )
     parent_id = fields.Many2one(
         comodel_name='hr.hospital.disease.category',
@@ -35,12 +35,12 @@ class HrDiseaseCategory(models.Model):
 
     @api.constrains('parent_id')
     def _check_category_recursion(self):
-        """ Check recursion for disease category  """
+        """ Check recursion for disease category"""
         if not self._check_recursion():
             raise ValidationError(_('You cannot create recursive categories.'))
 
     @api.model
-    def name_create(self, name):
+    def name_create(self, name: str) -> dict:
         """ Create name """
         return self.create({'name': name}).name_get()[0]
 
