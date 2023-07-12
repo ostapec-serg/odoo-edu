@@ -35,4 +35,3 @@ class HospitalCommon(TransactionCase):
                 'name': 'Demo Patient'
             }
         )
-

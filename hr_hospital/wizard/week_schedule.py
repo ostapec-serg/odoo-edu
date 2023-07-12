@@ -35,29 +35,29 @@ class HrHospitalWeekScheduleWizard(models.TransientModel):
         delta = timedelta(days=1)
         params = {
             "doctor_id": self.doctor_id.id,
-            "shift_duration": self.shift_duration,
+            "shift_duration": self.shift_duration
         }
         if self.is_even_or_odd == 'even':
             for _ in range(0, 7):
                 if week_start_date.day % 2 == 0:
-                    params["visit_date"] = week_start_date,
-                    params["start_time"] = week_start_date,
-                    params["day_week"] = week_start_date.strftime('%A'),
+                    params["visit_date"] = week_start_date
+                    params["start_time"] = week_start_date
+                    params["day_week"] = week_start_date.strftime('%A')
                     self._create_schedule(params)
                 week_start_date += delta
         elif self.is_even_or_odd == 'odd':
             for _ in range(0, 7):
                 if week_start_date.day % 2 != 0:
-                    params["visit_date"] = week_start_date,
-                    params["start_time"] = week_start_date,
-                    params["day_week"] = week_start_date.strftime('%A'),
+                    params["visit_date"] = week_start_date
+                    params["start_time"] = week_start_date
+                    params["day_week"] = week_start_date.strftime('%A')
                     self._create_schedule(params)
                 week_start_date += delta
         else:
             for _ in range(0, 7):
-                params["visit_date"] = week_start_date,
-                params["start_time"] = week_start_date,
-                params["day_week"] = week_start_date.strftime('%A'),
+                params["visit_date"] = week_start_date
+                params["start_time"] = week_start_date
+                params["day_week"] = week_start_date.strftime('%A')
                 self._create_schedule(params)
                 week_start_date += delta
 

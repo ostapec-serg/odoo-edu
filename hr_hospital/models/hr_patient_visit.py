@@ -65,7 +65,8 @@ class HrPatientVisit(models.Model):
         """
         Deletes the records in ``self``.
 
-        :raise AccessError: if the user is not allowed to delete all the given records
+        :raise AccessError: if the user is not allowed to delete all
+                the given records
         :raise UserError: if the record is default property for other records
         :raise ValidationError: if the record state == 'done'
         """
