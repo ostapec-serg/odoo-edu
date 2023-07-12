@@ -1,7 +1,7 @@
 # See LICENSE file for full copyright and licensing details.
 {
     'name': 'Hospital',
-    'version': '16.0.3.2.0',
+    'version': '16.0.3.3.0',
     'category': 'Customization',
     'summary': 'Maintaining records of doctors and patients',
 
